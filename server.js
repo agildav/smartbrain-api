@@ -47,7 +47,7 @@ app.post("/signin", (req, res) => {
   ) {
     res.json("success");
   } else {
-    res.status(400).json("Sign in error");
+    res.status(400).json("sign in error");
   }
 });
 
