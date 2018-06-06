@@ -22,10 +22,6 @@ app.use(
 );
 app.use(cors());
 
-db.select("*")
-  .from("users")
-  .then(data => console.log(data));
-
 const database = {
   users: [
     {
@@ -64,6 +60,23 @@ app.post("/signin", (req, res) => {
   } else {
     res.status(400).json("sign in error");
   }
+});
+
+app.post("/register", (req, res) => {
+  const { email, name, password } = req.body;
+
+  console.log("connected to /register");
+  db("users")
+    .insert({
+      email: email,
+      name: name,
+      joined: new Date()
+    })
+    .then(console.log);
+  res.json("success");
+  db.select("*")
+    .from("users")
+    .then(data => console.log(data));
 });
 
 app.listen(3000, () => {
