@@ -80,6 +80,24 @@ app.get("/profile/:id", (req, res) => {
     .catch(err => res.status(400).json("error getting user"));
 });
 
+app.put("/image", (req, res) => {
+  console.log("connected to /image");
+
+  const { id } = req.body;
+  db("users")
+    .where("id", "=", id)
+    .increment("entries", 1)
+    .returning("entries")
+    .then(entries => {
+      if (entries.length) {
+        res.json(entries[0]);
+      } else {
+        res.status(400).json("Not found");
+      }
+    })
+    .catch(err => res.status(400).json("unable to get entries"));
+});
+
 app.listen(3000, () => {
   console.log("app is running on port 3000");
 });
