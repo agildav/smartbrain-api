@@ -50,7 +50,7 @@ app.post("/register", (req, res) => {
   const { email, name, password } = req.body;
 
   console.log("connected to /register");
-  db("users")
+  return db("users")
     .returning("*")
     .insert({
       email: email,
