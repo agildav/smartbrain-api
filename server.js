@@ -22,44 +22,28 @@ app.use(
 );
 app.use(cors());
 
-const database = {
-  users: [
-    {
-      id: 000,
-      name: "Alberto",
-      email: "agildav@gmail.com",
-      password: "2356",
-      entries: 0,
-      join: new Date()
-    },
-    {
-      id: 001,
-      name: "Alexandra",
-      email: "vaneferrerp@gmail.com",
-      password: "1234",
-      entries: 0,
-      join: new Date()
-    }
-  ]
-};
-
 app.get("/", (req, res) => {
   console.log("connected to /");
-  res.json(database.users);
+
+  db.select("*")
+    .from("users")
+    .then(data => res.json(data));
 });
 
 app.post("/signin", (req, res) => {
   const { email, password } = req.body;
   //TODO: Loop th database
-  if (
+  /*if (
     email === database.users[0].email &&
     password === database.users[0].password
   ) {
-    res.json("success");
-    console.log("connected to /signin");
-  } else {
+    */
+  res.json(email);
+  console.log("connected to /signin");
+  /*} else {
     res.status(400).json("sign in error");
   }
+  */
 });
 
 app.post("/register", (req, res) => {
@@ -67,16 +51,33 @@ app.post("/register", (req, res) => {
 
   console.log("connected to /register");
   db("users")
+    .returning("*")
     .insert({
       email: email,
       name: name,
       joined: new Date()
     })
-    .then(console.log);
-  res.json("success");
+    .then(user => {
+      res.json(user[0]);
+    })
+    .catch(err => res.status(400).json("unable to register"));
+});
+
+app.get("/profile/:id", (req, res) => {
+  const { id } = req.params;
+
+  console.log("connected to /profile");
   db.select("*")
     .from("users")
-    .then(data => console.log(data));
+    .where({ id })
+    .then(user => {
+      if (user.length) {
+        res.json(user[0]);
+      } else {
+        res.status(400).json("Not found");
+      }
+    })
+    .catch(err => res.status(400).json("error getting user"));
 });
 
 app.listen(3000, () => {
