@@ -11,7 +11,14 @@ const image = require("./controllers/image");
 const db = knex({
   client: "pg",
   connection: {
-    connectionString: process.env.DATABASE_URL,
+    //TODO: Remove local development and use Heroku
+    //  Local dev
+    host: "127.0.0.1",
+    user: "gil",
+    password: "clave",
+    database: "smartbrain",
+    //  For Heroku
+    //connectionString: process.env.DATABASE_URL,
     ssl: "true"
   }
 });
@@ -49,6 +56,7 @@ app.post("/imageurl", (req, res) => {
   image.handleApiCall(req, res);
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`app is running on port ${process.env.PORT}`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`app is running on port ${port}`);
 });
