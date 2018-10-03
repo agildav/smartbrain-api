@@ -8,19 +8,13 @@ const signIn = require("./controllers/signIn");
 const profile = require("./controllers/profile");
 const image = require("./controllers/image");
 
+//  Database url like:
+//  postgres://user:password@postgres:5432/mydatabase
+const dbConnectionURL = process.env.DATABASE_URL;
+
 const db = knex({
   client: "pg",
-  connection: {
-    //TODO: Remove local development and use Heroku
-    //  Local dev
-    host: "127.0.0.1",
-    user: "gil",
-    password: "clave",
-    database: "smartbrain",
-    //  For Heroku
-    //connectionString: process.env.DATABASE_URL,
-    ssl: "true"
-  }
+  connection: dbConnectionURL
 });
 
 const app = express();
@@ -57,6 +51,6 @@ app.post("/imageurl", (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+app.listen(port || 3000, () => {
   console.log(`app is running on port ${port}`);
 });

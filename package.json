@@ -1,17 +1,14 @@
 {
   "name": "smartbrain-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "smartbrain-api dockerized",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon start.js"
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "nodemon": "^1.17.5"
-  },
+  "author": "Gil",
+  "license": "MIT",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "clarifai": "^2.7.1",

@@ -2,8 +2,7 @@ const Clarifai = require("clarifai");
 
 //  Clarifai
 const clarifai_model = "a403429f2ddf4b49b307e318f00e528b";
-const clarifai_key =
-  process.env.clarifai_key || "d1a0195d4ab04d3889cd5017e9482630";
+const clarifai_key = "e5ffb161cb2347a3a674cca3c60c5c65";
 
 const app = new Clarifai.App({
   apiKey: clarifai_key
