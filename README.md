@@ -1,2 +1,2 @@
 # smartbrain-api
- Face recognition react app server
+ Face recognition React app server with Docker
