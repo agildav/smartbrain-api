@@ -16,7 +16,10 @@ services:
   smartbrain-api:
     container_name: backend
     build: ./
-    command: npm start
+    volumes:
+      - ./:/usr/src/app
+    command: nodemon
+    working_dir: /usr/src/app
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
     ports:

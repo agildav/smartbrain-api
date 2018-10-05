@@ -5,4 +5,4 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY . /usr/src/app
-RUN npm install
+RUN npm install && npm i -g nodemon
