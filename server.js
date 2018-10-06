@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
     .then(data => res.json(data));
 });
 
-app.post("/signin", signIn.handleSignIn(db, bcrypt));
+app.post("/signin", signIn.handleSignInAuth(db, bcrypt));
 
 app.post("/register", (req, res) => {
   register.handleRegister(req, res, db, bcrypt);

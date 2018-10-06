@@ -1,9 +1,10 @@
-const handleSignIn = (db, bcrypt) => (req, res) => {
+const handleSignIn = (db, bcrypt, req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json("incorrect form submission");
+    return Promise.reject("incorrect form submission");
   }
-  db.select("email", "hash")
+  return db
+    .select("email", "hash")
     .from("login")
     .where("email", "=", email)
     .then(data => {
@@ -13,17 +14,27 @@ const handleSignIn = (db, bcrypt) => (req, res) => {
           .select("*")
           .from("users")
           .where("email", "=", email)
-          .then(user => {
-            res.json(user[0]);
-          })
-          .catch(err => res.status(400).json("unable to get user"));
+          .then(user => user[0])
+          .catch(err => Promise.reject("unable to get user"));
       } else {
-        res.status(400).json("wrong combination");
+        return Promise.reject("wrong combination");
       }
     })
-    .catch(err => res.status(400).json("wrong combination"));
+    .catch(err => Promise.reject("wrong combination"));
+};
+
+const getAuth = () => console.log("Auth");
+
+const handleSignInAuth = (db, bcrypt) => (req, res) => {
+  const { authorization } = req.headers;
+
+  return authorization
+    ? getAuth()
+    : handleSignIn(db, bcrypt, req, res)
+        .then(data => res.json(data))
+        .catch(err => res.json(err));
 };
 
 module.exports = {
-  handleSignIn: handleSignIn
+  handleSignInAuth
 };
