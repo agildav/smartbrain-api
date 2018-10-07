@@ -28,7 +28,15 @@ const handleSignIn = (db, bcrypt, req, res) => {
     .catch(err => Promise.reject("wrong combination"));
 };
 
-const getAuth = () => console.log("Auth");
+const getAuth = (req, res) => {
+  const { authorization } = req.headers;
+  return redisClient.get(authorization, (err, reply) => {
+    if (err || !reply) {
+      return res.status(400).json("Unauthorized");
+    }
+    return res.json({ id: reply });
+  });
+};
 
 const signInToken = email => {
   const jwtPayload = { email };
@@ -53,7 +61,7 @@ const handleSignInAuth = (db, bcrypt) => (req, res) => {
   const { authorization } = req.headers;
 
   return authorization
-    ? getAuth()
+    ? getAuth(req, res)
     : handleSignIn(db, bcrypt, req, res)
         .then(data => {
           return data.id && data.email
