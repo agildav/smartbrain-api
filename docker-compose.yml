@@ -12,6 +12,13 @@ services:
       # Default PostgreSQL port is 5432, can get error if using 5432:5432
       - "${POSTGRES_PORT}"
 
+  # Redis
+  redis:
+    container_name: redis
+    image: redis:5.0-rc5-alpine
+    ports:
+      - "6379:6379"
+
   # Backend
   smartbrain-api:
     container_name: backend
@@ -22,5 +29,6 @@ services:
     working_dir: /usr/src/app
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379
     ports:
       - "3000:3000"
