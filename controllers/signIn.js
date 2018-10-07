@@ -35,10 +35,18 @@ const signInToken = email => {
   return jwt.sign(jwtPayload, "shhhhh");
 };
 
+const setToken = (key, value) => {
+  return Promise.resolve(redisClient.set(key, value));
+};
+
 const createSessions = user => {
   const { id, email } = user;
   const token = signInToken(email);
-  return { success: "true", userID: id, token };
+  return setToken(token, id)
+    .then(() => {
+      return { success: "true", userID: id, token };
+    })
+    .catch(console.log);
 };
 
 const handleSignInAuth = (db, bcrypt) => (req, res) => {
