@@ -2,7 +2,6 @@ const Clarifai = require("clarifai");
 
 //  Clarifai
 const clarifai_model = "a403429f2ddf4b49b307e318f00e528b";
-//  TODO: Remove key and replace with process.env.api_key
 const clarifai_key = process.env.api_key;
 
 const app = new Clarifai.App({
