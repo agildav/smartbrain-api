@@ -7,6 +7,7 @@ const register = require("./controllers/register");
 const signIn = require("./controllers/signIn");
 const profile = require("./controllers/profile");
 const image = require("./controllers/image");
+const auth = require("./controllers/auth");
 
 //  Database url like:
 //  postgres://user:password@postgres:5432/mydatabase
@@ -27,9 +28,7 @@ app.use(
 app.use(cors());
 
 app.get("/", (req, res) => {
-  db.select("*")
-    .from("users")
-    .then(data => res.json(data));
+  res.json("Welcome, please use client side");
 });
 
 app.post("/signin", signIn.handleSignInAuth(db, bcrypt));
@@ -38,19 +37,19 @@ app.post("/register", (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
 });
 
-app.get("/profile/:id", (req, res) => {
+app.get("/profile/:id", auth.requireAuth, (req, res) => {
   profile.handleProfileGet(req, res, db);
 });
 
-app.post("/profile/:id", (req, res) => {
+app.post("/profile/:id", auth.requireAuth, (req, res) => {
   profile.handleProfileUpdate(req, res, db);
 });
 
-app.put("/image", (req, res) => {
+app.put("/image", auth.requireAuth, (req, res) => {
   image.handleImage(req, res, db);
 });
 
-app.post("/imageurl", (req, res) => {
+app.post("/imageurl", auth.requireAuth, (req, res) => {
   image.handleApiCall(req, res);
 });
 
