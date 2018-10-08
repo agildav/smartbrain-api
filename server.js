@@ -8,6 +8,7 @@ const signIn = require("./controllers/signIn");
 const profile = require("./controllers/profile");
 const image = require("./controllers/image");
 const auth = require("./controllers/auth");
+const signOut = require("./controllers/signOut");
 
 //  Database url like:
 //  postgres://user:password@postgres:5432/mydatabase
@@ -51,6 +52,10 @@ app.put("/image", auth.requireAuth, (req, res) => {
 
 app.post("/imageurl", auth.requireAuth, (req, res) => {
   image.handleApiCall(req, res);
+});
+
+app.get("/signout", auth.requireAuth, (req, res) => {
+  signOut.handleSignOut(req, res);
 });
 
 const port = process.env.PORT || 3000;
