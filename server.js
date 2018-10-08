@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 app.post("/signin", signIn.handleSignInAuth(db, bcrypt));
 
 app.post("/register", (req, res) => {
-  register.handleRegister(req, res, db, bcrypt);
+  register.handleRegisterAuth(req, res, db, bcrypt);
 });
 
 app.get("/profile/:id", auth.requireAuth, (req, res) => {
